@@ -23,8 +23,6 @@
 # DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-import time
-from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -187,7 +185,7 @@ class WeightOnlyInt8Linear(torch.nn.Module):
     weight: torch.Tensor
 
     def __init__(self, in_features: int, out_features: int, bias: bool = True, device=None, dtype=None) -> None:
-        factory_kwargs = {"device": device, "dtype": dtype}
+        # factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
         self.in_features = in_features
         self.out_features = out_features

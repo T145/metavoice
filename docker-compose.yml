@@ -1,5 +1,3 @@
-version: "3.5"
-
 networks:
   metavoice-net:
     driver: bridge
@@ -31,6 +29,7 @@ x-common-settings: &common-settings
   environment:
     - NVIDIA_VISIBLE_DEVICES=all
     - HF_HOME=/.hf-cache
+    - ANONYMIZED_TELEMETRY=0
   logging:
     options:
       max-size: "100m"

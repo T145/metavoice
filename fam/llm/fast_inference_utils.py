@@ -203,7 +203,7 @@ def generate(
     if max_new_tokens <= 0:
         raise ValueError("Prompt is too long to generate more tokens")
 
-    device, dtype = prompt.device, prompt.dtype
+    device = prompt.device
 
     seq = torch.clone(prompt)
     input_pos = torch.arange(0, T, device=device)
@@ -372,7 +372,7 @@ def build_model(
 
     device_sync(device=device)  # MKG
     t0 = time.perf_counter()
-    y = generate(
+    generate(
         model,
         encoded,
         spk_emb,
@@ -417,7 +417,8 @@ def main(
     device_sync(device=device)  # MKG
 
     if True:
-        callback = lambda x: x
+        def callback(x):
+            return x
     t0 = time.perf_counter()
 
     y = generate(

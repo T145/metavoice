@@ -1,9 +1,5 @@
-from contextlib import nullcontext
-import os
 import uuid
-import pathlib
-from typing import Literal, Optional
-import torch
+from typing import Optional
 
 batch_size = 2
 dataset_size: int = 400

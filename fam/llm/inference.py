@@ -131,7 +131,7 @@ class Model:
             self.model = GPT(gptconf, speaker_emb_dim=speaker_emb_size if self.speaker_cond else None)
             state_dict = checkpoint["model"]
             unwanted_prefix = "_orig_mod."
-            for k, v in list(state_dict.items()):
+            for k in state_dict.keys():
                 if k.startswith(unwanted_prefix):
                     state_dict[k[len(unwanted_prefix) :]] = state_dict.pop(k)
             self.model.load_state_dict(state_dict)
@@ -179,7 +179,8 @@ class Model:
         ## create multiple hierarchies and get seq_lens
         seq_lens = []
         xs = []
-        for i, encoded_text in enumerate(encoded_texts):
+
+        for encoded_text in encoded_texts:
             encoded_text = torch.tensor([encoded_text], dtype=torch.long, device=self.config.device)
             # TODO: remove magic number
             xs.append(
@@ -267,9 +268,9 @@ class Model:
         # TODO: same code is used during data prep. refactor
         padded_hierarchies_inputs = []
         for encoded_text, encodec_token in zip(encoded_texts, encodec_tokens):
-            x = torch.tensor(encoded_text, dtype=torch.long, device=self.config.device)[
-                None, None, ...
-            ]  # (b=1, c=1, t)
+            # x = torch.tensor(encoded_text, dtype=torch.long, device=self.config.device)[
+            #     None, None, ...
+            # ]  # (b=1, c=1, t)
 
             # TODO: should only happen if decoder is encodecdeocder?
             assert encodec_token.shape[0] == 1
@@ -313,7 +314,7 @@ class Model:
         with torch.no_grad():
             with self._ctx:  # type: ignore
                 to_return = []
-                for k in range(self.config.num_samples):
+                for _ in range(self.config.num_samples):
                     y = self.model.generate(
                         in_x,
                         None,

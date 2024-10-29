@@ -23,6 +23,7 @@
 # DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+import logging
 from dataclasses import dataclass
 from functools import reduce
 from math import gcd
@@ -34,8 +35,6 @@ from torch import Tensor
 from torch.nn import functional as F
 
 from fam.llm.utils import get_default_dtype
-
-import logging
 
 # Adjust the logging level
 logger = logging.getLogger("torch")
@@ -156,7 +155,7 @@ class Transformer(nn.Module):
             + self.speaker_cond_pos(spk_emb) * self.spk_cond_mask
         )
 
-        for i, layer in enumerate(self.layers):
+        for layer in self.layers:
             x = layer(x, input_pos, mask)
         x = self.norm(x)
         logits = self.output(x)

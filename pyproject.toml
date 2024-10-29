@@ -38,12 +38,14 @@ observable = ["wandb"]
 [tool.poetry.scripts]
 finetune = "fam.llm.finetune:main"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 120
 exclude = '''
 /(
     \.git
@@ -58,3 +60,7 @@ exclude = '''
 [tool.isort]
 profile = "black"
 
+[tool.ruff]
+ignore = ["E501", "E402"]
+line-length = 120
+select = ["E", "F", "W", "I", "B"]

@@ -52,7 +52,7 @@ def _check_speaker_emb_dims(
     """
     Checks that the speaker embedding dimensions are correct, and reshapes them if necessary.
     """
-    if type(speaker_embs) == list:
+    if type(speaker_embs) is list:
         b_se = len(speaker_embs)
         for i, s in enumerate(speaker_embs):
             if s is not None:
@@ -237,7 +237,7 @@ class GPT(nn.Module, NonCausalInferenceMixin, CausalInferenceMixin):
 
         spk_emb = 0.0
         if speaker_embs is not None:
-            if type(speaker_embs) == list:
+            if type(speaker_embs) is list:
                 assert speaker_emb_mask is None
                 assert self.training is False
                 assert self.spk_emb_on_text is True

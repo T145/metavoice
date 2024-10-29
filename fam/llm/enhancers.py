@@ -12,7 +12,6 @@ def convert_to_wav(input_file: str, output_file: str):
     Args:
         input_file (str): path to input audio file
         output_file (str): path to output WAV file
-
     """
     # Detect the format of the input file
     format = input_file.split(".")[-1].lower()
