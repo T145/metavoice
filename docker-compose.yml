@@ -1,11 +1,6 @@
-networks:
-  metavoice-net:
-    driver: bridge
-
 volumes:
   hf-cache:
     driver: local
-
 x-common-settings: &common-settings
   volumes:
     - hf-cache:/.hf-cache
@@ -19,22 +14,21 @@ x-common-settings: &common-settings
             count: 1
             capabilities: [ gpu ]
   runtime: nvidia
-  ipc: host
+  #ipc: host # NOTE: Can be a security risk!
   tty: true # enable colorized logs
   build:
     context: .
-  image: metavoice-server:latest
-  networks:
-    - metavoice-net
+    dockerfile: Dockerfile
+  # Build using: docker build --no-cache --progress=plain -t metavoice .
+  # or: docker compose up -d --build
+  image: metavoice
   environment:
     - NVIDIA_VISIBLE_DEVICES=all
     - HF_HOME=/.hf-cache
-    - ANONYMIZED_TELEMETRY=0
   logging:
     options:
       max-size: "100m"
       max-file: "10"
-
 services:
   server:
     <<: *common-settings
@@ -43,7 +37,7 @@ services:
     ports:
       - 58004:58004
     healthcheck:
-      test: [ "CMD", "curl", "http://metavoice-server:58004/health" ]
+      test: [ "CMD", "curl", "http://localhost:58004/health" ]
       interval: 1m
       timeout: 10s
       retries: 20
