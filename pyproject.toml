@@ -7,8 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = "^2.1.0"
-torchaudio = "^2.1.0"
 librosa = "^0.10.1"
 tqdm = "^4.66.2"
 tiktoken = "==0.5.1"

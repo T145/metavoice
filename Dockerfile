@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as base
+FROM nvidia/cuda:12.1.1-devel-ubuntu22.04 as base
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
@@ -18,7 +18,7 @@ RUN apt-get update && \
 # install via pip given ubuntu 22.04 as per docs https://pipx.pypa.io/stable/installation/
 RUN python3 -m pip install --user pipx && \
     python3 -m pipx ensurepath && \
-    python3 -m pipx install poetry==1.8.2
+    python3 -m pipx install poetry==1.8.4
 
 # make pipx installs (i.e poetry) available
 ENV PATH="/root/.local/bin:${PATH}"
@@ -34,11 +34,11 @@ RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz 
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
-RUN touch README.md # poetry will complain otherwise
-
-RUN poetry install --without dev --no-root
-RUN poetry run python -m pip install torch==2.2.1 torchaudio==2.2.1 && \
-  rm -rf $POETRY_CACHE_DIR
+# Empty README created to avoid Poetry complaints
+RUN touch README.md && \
+    poetry install --without dev --no-root && \
+    #poetry run python -m pip install torch==2.2.1 torchaudio==2.2.1 && \
+    rm -rf $POETRY_CACHE_DIR
 
 COPY fam ./fam
 COPY serving.py ./
