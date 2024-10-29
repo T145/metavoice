@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "fam"
-version = "0.1.0"
+version = "0.1.4"
 description = "Foundational model for text to speech"
 authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.12"
 librosa = "^0.10.1"
 tqdm = "^4.66.2"
 tiktoken = "==0.5.1"

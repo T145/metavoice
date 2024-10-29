@@ -2584,7 +2584,6 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
     {version = ">=1.22.4", markers = "python_version < \"3.11\""},
     {version = ">=1.23.2", markers = "python_version == \"3.11\""},
 ]
@@ -3006,10 +3005,7 @@ files = [
 [package.dependencies]
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
-typing-extensions = [
-    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
-    {version = ">=4.6.1", markers = "python_version < \"3.13\""},
-]
+typing-extensions = {version = ">=4.6.1", markers = "python_version < \"3.13\""}
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
@@ -5318,5 +5314,5 @@ observable = ["wandb"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10"
-content-hash = "0eea0546784b597b27d1a4fa8c6eeb56e6ab1401da7e764dbd29144eb2172fb8"
+python-versions = ">=3.10,<3.12"
+content-hash = "ffe9b1737dd033ad7c4b01c3f94425381e009d014b6f50329cb997e01f8357d9"
