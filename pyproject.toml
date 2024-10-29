@@ -24,6 +24,8 @@ wandb = {version = "^0.16.4", optional = true}
 posthog = "^3.5.0"
 python-dotenv = "^1.0.1"
 audiocraft = {git = "https://github.com/facebookresearch/audiocraft.git"}
+attrs = "^24.2.0"
+triton = {version = "2.1.0", markers = "sys_platform == 'linux' or sys_platform == 'darwin'"}
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.7.0"

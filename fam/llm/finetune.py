@@ -346,7 +346,9 @@ def main(train: Path, val: Path, model_id: str, ckpt: Optional[Path], spk_emb_ck
             scaler.step(optimizer)
             scaler.update()
             # flush the gradients as soon as we can, no need for this memory anymore
-            optimizer.zero_grad(set_to_none=True)
+            # https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html#use-parameter-grad-none-instead-of-model-zero-grad-or-optimizer-zero-grad
+            for param in model.parameters():
+                param.grad = None
 
             # timing and logging
             t1 = time.time()

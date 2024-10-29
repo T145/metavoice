@@ -21,7 +21,7 @@ x-common-settings: &common-settings
     dockerfile: Dockerfile
   # Build using: docker build --no-cache --progress=plain -t metavoice .
   # or: docker compose up -d --build
-  image: metavoice
+  image: metavoice:latest
   environment:
     - NVIDIA_VISIBLE_DEVICES=all
     - HF_HOME=/.hf-cache

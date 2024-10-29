@@ -1,10 +1,11 @@
-FROM nvidia/cuda:12.1.1-devel-ubuntu22.04
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_VIRTUALENVS_CREATE=1 \
     POETRY_CACHE_DIR=/tmp/poetry_cache \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
 
 # Install system dependencies in a single RUN command to reduce layers
 # Combine apt-get update, upgrade, and installation of packages. Clean up in the same layer to reduce image size.

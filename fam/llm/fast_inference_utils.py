@@ -46,11 +46,14 @@ def device_sync(device):
         print(f"device={device} is not yet suppported")
 
 
+# https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html#enable-cudnn-auto-tuner
+torch.backends.cudnn.benchmark = True
+
 torch._inductor.config.coordinate_descent_tuning = True
-torch._inductor.config.triton.unique_kernel_names = True
-torch._inductor.config.fx_graph_cache = (
-    True  # Experimental feature to reduce compilation times, will be on by default in future
-)
+# torch._inductor.config.triton.unique_kernel_names = True
+# torch._inductor.config.fx_graph_cache = (
+#     True  # Experimental feature to reduce compilation times, will be on by default in future
+# )
 
 # imports need to happen after setting above flags
 from fam.llm.fast_model import Transformer
@@ -282,10 +285,12 @@ def _load_model(
 
     if quantisation_mode == "int8":
         warnings.warn(
-            "int8 quantisation is slower than bf16/fp16 for undebugged reasons! Please set optimisation_mode to `None` or to `int4`."
+            "int8 quantisation is slower than bf16/fp16 for undebugged reasons! Please set optimisation_mode to `None` or to `int4`.",
+            stacklevel=1
         )
         warnings.warn(
-            "quantisation will degrade the quality of the audio! Please set optimisation_mode to `None` for best quality."
+            "quantisation will degrade the quality of the audio! Please set optimisation_mode to `None` for best quality.",
+            stacklevel=1
         )
         simple_quantizer = WeightOnlyInt8QuantHandler(model)
         quantized_state_dict = simple_quantizer.create_quantized_state_dict()
@@ -296,7 +301,8 @@ def _load_model(
         torch.cuda.empty_cache()
     elif quantisation_mode == "int4":
         warnings.warn(
-            "quantisation will degrade the quality of the audio! Please set optimisation_mode to `None` for best quality."
+            "quantisation will degrade the quality of the audio! Please set optimisation_mode to `None` for best quality.",
+            stacklevel=1
         )
         simple_quantizer = WeightOnlyInt4QuantHandler(model, groupsize=128)
         quantized_state_dict = simple_quantizer.create_quantized_state_dict()
