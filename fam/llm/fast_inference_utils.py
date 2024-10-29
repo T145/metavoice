@@ -54,6 +54,12 @@ torch._inductor.config.coordinate_descent_tuning = True
 # torch._inductor.config.fx_graph_cache = (
 #     True  # Experimental feature to reduce compilation times, will be on by default in future
 # )
+CAN_MAX_AUTOTUNE = torch.cuda.get_device_properties(0).multi_processor_count > 80
+torch._inductor.config.max_autotune = CAN_MAX_AUTOTUNE
+torch._inductor.config.max_autotune_gemm = CAN_MAX_AUTOTUNE
+torch._inductor.config.max_autotune_pointwise = CAN_MAX_AUTOTUNE
+# https://discuss.pytorch.org/t/torch-compile-warning-not-enough-sms-to-use-max-autotune-gemm-mode/184405
+COMPILE_MODE = 'max-autotune' if CAN_MAX_AUTOTUNE else 'reduce-overhead'
 
 # imports need to happen after setting above flags
 from fam.llm.fast_model import Transformer
@@ -160,7 +166,7 @@ def decode_n_tokens(
     **sampling_kwargs,
 ):
     new_tokens, new_probs = [], []
-    for i in tqdm.tqdm(range(num_new_tokens)):
+    for _ in tqdm.tqdm(range(num_new_tokens)):
         if (cur_token == end_of_audio_token).any():
             break
         with torch.backends.cuda.sdp_kernel(
@@ -362,7 +368,7 @@ def build_model(
         global decode_one_token, prefill
         decode_one_token = torch.compile(
             decode_one_token,
-            mode="max-autotune",
+            mode=COMPILE_MODE,
             fullgraph=True,
         )
 
