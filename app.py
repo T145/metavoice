@@ -78,7 +78,7 @@ def tts(to_say, top_p, guidance, toggle, preset_dropdown, upload_target):
             guidance_scale=d_guidance,
         )
     except Exception as e:
-        raise gr.Error(f"Something went wrong. Reason: {str(e)}")
+        raise gr.Error(f"Something went wrong. Reason: {str(e)}") from e
 
 
 def change_voice_selection_layout(choice):
