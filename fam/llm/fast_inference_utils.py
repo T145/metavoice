@@ -61,6 +61,9 @@ torch._inductor.config.max_autotune_pointwise = CAN_MAX_AUTOTUNE
 # https://discuss.pytorch.org/t/torch-compile-warning-not-enough-sms-to-use-max-autotune-gemm-mode/184405
 COMPILE_MODE = 'max-autotune' if CAN_MAX_AUTOTUNE else 'reduce-overhead'
 
+# Enable fallback to eager mode random number generator, since Triton isn't as deterministic
+torch._inductor.config.fallback_random = True
+
 # imports need to happen after setting above flags
 from fam.llm.fast_model import Transformer
 from fam.quantiser.audio.speaker_encoder.model import SpeakerEncoder
