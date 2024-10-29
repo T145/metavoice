@@ -63,8 +63,8 @@ class TTS:
             telemetry_origin: A string identifier that specifies the origin of the telemetry data sent to PostHog.
         """
 
-        # NOTE: this needs to come first so that we don't change global state when we want to use
-        # the torch.compiled-model.
+        # NOTE: This needs to come first so that we don't change global state when we want to use
+        # the compiled Torch model.
         self._dtype = get_default_dtype()
         self._device = get_device()
         self._model_dir = snapshot_download(repo_id=model_name)
@@ -117,6 +117,9 @@ class TTS:
 
         returns: path to speech .wav file
         """
+        # Fixes: "UserWarning: changing options to `torch.compile()` may require calling `torch._dynamo.reset()` to take effect"
+        torch._dynamo.reset()
+
         text = normalize_text(text)
         spk_ref_path = get_cached_file(spk_ref_path)
         check_audio_file(spk_ref_path)
