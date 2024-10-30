@@ -218,7 +218,7 @@ class Model:
         with torch.no_grad():
             with self._ctx:  # type: ignore
                 to_return = []
-                for k in range(self.config.num_samples):
+                for _ in range(self.config.num_samples):
                     assert seq_lens is not None
                     assert batch_size is not None
 
@@ -494,7 +494,7 @@ def _sample_utterance_batch(
         max_new_tokens=None,
     )
 
-    for text, tokens, speaker_embs, ref_name, wav_file in zip(texts, b_tokens, b_speaker_embs, refs, wav_files):
+    for text, ref_name, wav_file in zip(texts, refs, wav_files):
         if wav_file is None:
             continue
 

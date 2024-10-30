@@ -38,7 +38,7 @@ COPY pyproject.toml poetry.lock ./
 # Empty README created to avoid Poetry complaints
 RUN touch README.md && \
     poetry install --without dev --no-root && \
-    #poetry run python -m pip install torch==2.2.1 torchaudio==2.2.1 && \
+    poetry run python -m pip install torch==2.2.1 torchaudio==2.2.1 && \
     rm -rf $POETRY_CACHE_DIR
 
 COPY fam ./fam
