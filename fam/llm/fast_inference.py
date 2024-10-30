@@ -118,7 +118,8 @@ class TTS:
         returns: path to speech .wav file
         """
         # Fixes: "UserWarning: changing options to `torch.compile()` may require calling `torch._dynamo.reset()` to take effect"
-        torch._dynamo.reset()
+        # While the warning is removed, it also forces a recompile which can take up to 30-40s.
+        #torch._dynamo.reset()
 
         text = normalize_text(text)
         spk_ref_path = get_cached_file(spk_ref_path)
